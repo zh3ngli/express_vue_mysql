@@ -18,40 +18,92 @@ const app = Vue.createApp({
             this.resetForm();
         },
         submitForm() {
-            let json = {
-                user_id: user_id,
-                name: this.name,
-                latitude: this.latitude,
-                longitude: this.longitude
-            }
-            console.log(json);
+            if (this.dialogTitle == 'New Listing') {
+                let json = {
+                    user_id: user_id,
+                    name: this.name,
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                }
+                // console.log(json);
 
-            fetch("/newListing", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(json)
-            })
-                .then(resp => {
-                    return resp.json()
+                fetch("/newListing", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(json)
                 })
-                .then(resp => {
-                    this.dialog = false;
-                    if (resp.status == 200) {
-                        window.location.reload()
-                    }
-                    else alert(resp.message);
+                    .then(resp => {
+                        return resp.json()
+                    })
+                    .then(resp => {
+                        this.dialog = false;
+                        if (resp.status == 200) {
+                            window.location.reload()
+                        }
+                        else alert(resp.message);
+                    })
+            }
+            else {
+                let json = {
+                    id: this.dialogTitle.split(': ')[1],
+                    name: this.name,
+                    latitude: this.latitude,
+                    longitude: this.longitude
+                }
+                // console.log(json);
+
+                fetch("/updateListing", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(json)
                 })
+                    .then(resp => {
+                        return resp.json()
+                    })
+                    .then(resp => {
+                        this.dialog = false;
+                        if (resp.status == 200) {
+                            window.location.reload()
+                        }
+                        else alert(resp.message);
+                    })
+            }
         },
         resetForm() {
             this.name = '';
             this.latitude = '';
             this.longitude = '';
         },
-        editRow(item) { },
-        deleteRow(item, index) {
-
+        editRow(item) {
+            this.dialog = true;
+            this.dialogTitle = `Edit Work ID: ${item.id}`;
+            this.name = item.name;
+            this.latitude = item.latitude;
+            this.longitude = item.longitude;
+        },
+        deleteRow(item) {
+            // console.log(item);
+                fetch("/deleteListing", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(item)
+                })
+                    .then(resp => {
+                        return resp.json()
+                    })
+                    .then(resp => {
+                        this.dialog = false;
+                        if (resp.status == 200) {
+                            window.location.reload()
+                        }
+                        else alert(resp.message);
+                    })
         }
     },
     computed: {

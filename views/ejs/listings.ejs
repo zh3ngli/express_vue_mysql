@@ -23,7 +23,7 @@
                         <!-- <div class="d-flex justify-center"> -->
                         <v-btn size="x-small" variant="text" color="success" @click="editRow(item)" class="buttonCenter"
                             icon="mdi-pencil"></v-btn>
-                        <v-btn size="x-small" variant="text" color="error" @click="deleteRow(item,index)"
+                        <v-btn size="x-small" variant="text" color="error" @click="deleteRow(item)"
                             class="buttonCenter" icon="mdi-delete"></v-btn>
                         <!-- </div> -->
                     </template>
@@ -69,7 +69,6 @@
 </body>
 <script>
     const user_id = "<%= user_id %>";
-    const table_data = "<%=table_data %>";
 </script>
 <script src="../js/listings.js"> </script>
 

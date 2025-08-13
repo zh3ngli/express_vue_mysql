@@ -50,7 +50,7 @@ router.get('/admin/listings', async (req, res) => {
       d.actions = ''
       return d
     })
-    res.render('listings', { table_data: JSON.stringify(rows), user_id: id,test:rows })
+    res.render('listings', { table_data: JSON.stringify(rows), user_id: id, test: rows })
   } catch (err) {
     console.error(err);
     return res.status(500).json({ status: 500, message: 'Server error' });
@@ -63,6 +63,32 @@ router.post('/newListing', async (req, res) => {
     await db.query(
       `INSERT INTO listings (user_id,name, latitude, longitude) VALUES (?, ?, ?, ?)`,
       [user_id, name, latitude, longitude]
+    );
+    return res.json({ status: 200, message: 'Success' })
+  } catch (err) {
+    return res.status(500).json({ status: 500, message: 'Server error' });
+  }
+})
+
+router.post('/updateListing', async (req, res) => {
+  try {
+    const { id, name, latitude, longitude } = req.body;
+    await db.query(
+      `UPDATE listings SET name = ?, latitude = ?, longitude = ? WHERE id = ?`,
+      [name, latitude, longitude, id]
+    );
+    return res.json({ status: 200, message: 'Success' })
+  } catch (err) {
+    return res.status(500).json({ status: 500, message: 'Server error' });
+  }
+})
+
+router.post('/deleteListing', async (req, res) => {
+  try {
+    const { id } = req.body;
+    await db.query(
+      `DELETE FROM listings WHERE id = ?`,
+      [id]
     );
     return res.json({ status: 200, message: 'Success' })
   } catch (err) {
