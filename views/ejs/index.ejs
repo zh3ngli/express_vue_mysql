@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Admin Page</title>
+  <script src="../../node_modules/vue/dist/vue.global.js"></script>
+  <script src="../../node_modules/vuetify/dist/vuetify.min.js"></script>
+  <link href="../../node_modules/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <link href="../../node_modules/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div id="App">
+    <v-app>
+      <v-main>
+        <v-container fluid class="d-flex align-center justify-center" style="height: 100vh;">
+          <v-sheet class=" pa-10 " elevation="8" width="30vw" rounded="lg">
+            <v-form @submit.prevent="login">
+              <span class="text-subtitle-1 text-medium-emphasis">Account</span>
+              <v-text-field density="compact" placeholder="Email address" prepend-inner-icon="mdi-email-outline"
+                variant="outlined" v-model="email"></v-text-field>
+
+              <span class="text-subtitle-1 text-medium-emphasis">Password</span>
+              <v-text-field class="mb-8" :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+                :type="visible ? 'text' : 'password'" density="compact" placeholder="Enter your password"
+                prepend-inner-icon="mdi-lock-outline" variant="outlined" @click:append-inner="visible = !visible"
+                v-model="password"></v-text-field>
+
+              <v-btn color="blue" size="large" variant="tonal" block type="submit">
+                Log In
+              </v-btn>
+            </v-form>
+          </v-sheet>
+        </v-container>
+      </v-main>
+    </v-app>
+  </div>
+</body>
+<script src="../js/login.js"> </script>
+
+</html>

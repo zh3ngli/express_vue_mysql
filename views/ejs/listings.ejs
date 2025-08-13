@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Listings Page</title>
+    <script src="../../node_modules/vue/dist/vue.global.js"></script>
+    <script src="../../node_modules/vuetify/dist/vuetify.min.js"></script>
+    <link href="../../node_modules/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link href="../../node_modules/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="App">
+        <v-app>
+            <v-main>
+                <div class="d-flex justify-end pa-6">
+                    <v-btn prepend-icon="mdi-plus" color="success"
+                        @click="dialog=true;dialogTitle='New Listing';">New</v-btn>
+                </div>
+                <!-- {{<%- JSON.stringify(test)%>.length}} -->
+                <v-data-table :items="<%= table_data %>">
+                    <template #item.actions="{ item,index }">
+                        <!-- <div class="d-flex justify-center"> -->
+                        <v-btn size="x-small" variant="text" color="success" @click="editRow(item)" class="buttonCenter"
+                            icon="mdi-pencil"></v-btn>
+                        <v-btn size="x-small" variant="text" color="error" @click="deleteRow(item,index)"
+                            class="buttonCenter" icon="mdi-delete"></v-btn>
+                        <!-- </div> -->
+                    </template>
+                </v-data-table>
+                <!-- dialog -->
+                <v-dialog v-model="dialog" width="30vw" persistent>
+                    <v-card>
+                        <div class="d-flex justify-end">
+                            <v-btn variant="text" color="error" @click="closeDialog">X</v-btn>
+                        </div>
+                        <v-card-title class="pl-6">{{ dialogTitle }}</v-card-title>
+                        <v-card-text>
+                            <v-form @submit.prevent="submitForm">
+                                <v-row>
+                                    <v-col>
+                                        <v-text-field density="compact" label="Name" v-model="name"
+                                            variant="outlined"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col>
+                                        <v-text-field density="compact" label="Latitude" v-model="latitude"
+                                            variant="outlined" :rules="rules_latitude" type="number"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <v-row>
+                                    <v-col>
+                                        <v-text-field density="compact" label="Longitude" v-model="longitude"
+                                            variant="outlined" :rules="rules_longitude" type="number"></v-text-field>
+                                    </v-col>
+                                </v-row>
+                                <div class="d-flex justify-end pt-8">
+                                    <v-btn type="submit" color="success" :disabled="isBlank">Save</v-btn>
+                                    <v-btn color="error" style="margin-left: 10px;" @click="closeDialog">Cancel</v-btn>
+                                </div>
+                            </v-form>
+                        </v-card-text>
+                    </v-card>
+                </v-dialog>
+            </v-main>
+        </v-app>
+    </div>
+</body>
+<script>
+    const user_id = "<%= user_id %>";
+    const table_data = "<%=table_data %>";
+</script>
+<script src="../js/listings.js"> </script>
+
+</html>
