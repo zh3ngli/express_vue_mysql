@@ -6,6 +6,7 @@ const defaultData = {
     longitude: '',
     rules_latitude: [val => val >= -90 && val <= 90 || 'range: -90 to 90'],
     rules_longitude: [val => val >= -180 && val <= 180 || 'range: -180 to 180'],
+    user_id: 2
 }
 
 const app = Vue.createApp({
@@ -20,10 +21,10 @@ const app = Vue.createApp({
         submitForm() {
             if (this.dialogTitle == 'New Listing') {
                 let json = {
-                    user_id: user_id,
+                    user_id: this.user_id,
                     name: this.name,
-                    latitude: this.latitude,
-                    longitude: this.longitude
+                    latitude: parseFloat(this.latitude),
+                    longitude: parseFloat(this.longitude)
                 }
                 // console.log(json);
 
@@ -40,7 +41,7 @@ const app = Vue.createApp({
                     .then(resp => {
                         this.dialog = false;
                         if (resp.status == 200) {
-                            window.location.reload()
+                            window.location.reload();
                         }
                         else alert(resp.message);
                     })
@@ -49,8 +50,8 @@ const app = Vue.createApp({
                 let json = {
                     id: this.dialogTitle.split(': ')[1],
                     name: this.name,
-                    latitude: this.latitude,
-                    longitude: this.longitude
+                    latitude: parseFloat(this.latitude),
+                    longitude: parseFloat(this.longitude)
                 }
                 // console.log(json);
 
@@ -67,7 +68,7 @@ const app = Vue.createApp({
                     .then(resp => {
                         this.dialog = false;
                         if (resp.status == 200) {
-                            window.location.reload()
+                            window.location.reload();
                         }
                         else alert(resp.message);
                     })
@@ -77,6 +78,7 @@ const app = Vue.createApp({
             this.name = '';
             this.latitude = '';
             this.longitude = '';
+            this.user_id = ''
         },
         editRow(item) {
             this.dialog = true;
@@ -87,28 +89,28 @@ const app = Vue.createApp({
         },
         deleteRow(item) {
             // console.log(item);
-                fetch("/deleteListing", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(item)
+            fetch("/deleteListing", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(item)
+            })
+                .then(resp => {
+                    return resp.json()
                 })
-                    .then(resp => {
-                        return resp.json()
-                    })
-                    .then(resp => {
-                        this.dialog = false;
-                        if (resp.status == 200) {
-                            window.location.reload()
-                        }
-                        else alert(resp.message);
-                    })
+                .then(resp => {
+                    this.dialog = false;
+                    if (resp.status == 200) {
+                        window.location.reload()
+                    }
+                    else alert(resp.message);
+                })
         }
     },
     computed: {
         isBlank() {
-            if (this.name == '' || this.latitude == '' || this.longitude == ''
+            if (this.name == '' || this.latitude == '' || this.longitude == '' || this.user_id == ''
                 || this.rules_latitude.every(rule => rule(this.latitude) !== true)
                 || this.rules_longitude.every(rule => rule(this.longitude) !== true)
             ) {

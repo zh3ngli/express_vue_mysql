@@ -17,14 +17,13 @@
                     <v-btn prepend-icon="mdi-plus" color="success"
                         @click="dialog=true;dialogTitle='New Listing';">New</v-btn>
                 </div>
-                <!-- {{<%- JSON.stringify(test)%>.length}} -->
                 <v-data-table :items="<%= table_data %>">
                     <template #item.actions="{ item,index }">
                         <!-- <div class="d-flex justify-center"> -->
                         <v-btn size="x-small" variant="text" color="success" @click="editRow(item)" class="buttonCenter"
                             icon="mdi-pencil"></v-btn>
-                        <v-btn size="x-small" variant="text" color="error" @click="deleteRow(item)"
-                            class="buttonCenter" icon="mdi-delete"></v-btn>
+                        <v-btn size="x-small" variant="text" color="error" @click="deleteRow(item)" class="buttonCenter"
+                            icon="mdi-delete"></v-btn>
                         <!-- </div> -->
                     </template>
                 </v-data-table>
@@ -55,6 +54,11 @@
                                             variant="outlined" :rules="rules_longitude" type="number"></v-text-field>
                                     </v-col>
                                 </v-row>
+                                <v-row>
+                                    <v-col>
+                                        <v-select density="compact" label="User ID" :items="[2,3]" v-model="user_id" variant="outlined"></v-select>
+                                    </v-col>
+                                </v-row>
                                 <div class="d-flex justify-end pt-8">
                                     <v-btn type="submit" color="success" :disabled="isBlank">Save</v-btn>
                                     <v-btn color="error" style="margin-left: 10px;" @click="closeDialog">Cancel</v-btn>
@@ -67,9 +71,6 @@
         </v-app>
     </div>
 </body>
-<script>
-    const user_id = "<%= user_id %>";
-</script>
 <script src="../js/listings.js"> </script>
 
 </html>

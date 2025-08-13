@@ -13,9 +13,10 @@ async function seed() {
     await db.query(
       `INSERT IGNORE INTO users (id, name, email, password, role_type)
        VALUES
-       (1, 'Admin One', 'admin@example.com', ?, 'a'),
-       (2, 'Normal User', 'user@example.com', ?, 'u')`,
-      [adminPassword, userPassword]
+       (1, 'Admin', 'admin@example.com', ?, 'a'),
+       (2, 'User 1', 'user1@example.com', ?, 'u'),
+       (3, 'User 2', 'user2@example.com', ?, 'u')`,
+      [adminPassword, userPassword, userPassword]
     );
 
     // // sample listings (around some coordinate)
